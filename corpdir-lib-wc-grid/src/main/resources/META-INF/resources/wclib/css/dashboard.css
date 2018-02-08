@@ -1,0 +1,53 @@
+.gridlist-item {
+	transition: transform .2s ease, top .2s ease, left .2s ease;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	overflow: auto;
+	margin-bottom: 6px;
+}
+
+
+.resize-west {
+	cursor: w-resize;
+	position: absolute;
+	width: 10px;
+	height: 100%;
+	top: 0;
+	left: -2px;
+}
+.resize-east {
+	cursor: e-resize;
+	position: absolute;
+	width: 10px;
+	height: 100%;
+	top: 0;
+	right: -2px;
+}
+.resize-south {
+	cursor: s-resize;
+	position: absolute;
+	width: 100%;
+	height: 10px;
+	bottom: -2px;
+	left: 10px;
+}
+
+/*body.resizing {
+  cursor: e-resize;
+}*/
+
+.gridlist-item.dragging, .gridlist-item.resizing {
+	transition: transform 0s linear;
+	z-index: 1000;
+	opacity: .5;
+}
+
+.placeholder {
+	outline: 2px dashed rgba(0, 0, 0, .8);
+	transition: transform .2s ease, top .2s ease, left .2s ease;
+	outline-offset: -2px;
+}
+
+.no-border {
+    border: none;
+}
