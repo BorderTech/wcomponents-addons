@@ -79,7 +79,7 @@
 
 	<modules>
 		<module>wcomponents-addons-common</module>
-		<module>wcomponents-addons-grid</module>
+		<!--<module>wcomponents-addons-grid</module>--><!-- Not yet! -->
 		<module>wcomponents-addons-polling</module>
 		<module>wcomponents-addons-cardpath</module>
 		<module>wcomponents-addons-table</module>
