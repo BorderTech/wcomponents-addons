@@ -1,10 +1,10 @@
 package com.github.bordertech.wcomponents.lib.polling;
 
 import com.github.bordertech.didums.Didums;
-import com.github.bordertech.taskmanager.service.ResultHolder;
-import com.github.bordertech.taskmanager.service.ServiceAction;
-import com.github.bordertech.taskmanager.service.ServiceException;
-import com.github.bordertech.taskmanager.service.ServiceHelper;
+import com.github.bordertech.taskmaster.service.ResultHolder;
+import com.github.bordertech.taskmaster.service.ServiceAction;
+import com.github.bordertech.taskmaster.service.ServiceException;
+import com.github.bordertech.taskmaster.service.ServiceHelper;
 import com.github.bordertech.wcomponents.Request;
 import com.github.bordertech.wcomponents.lib.common.WDiv;
 import java.io.Serializable;

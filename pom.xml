@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<name>wcomponents-addons</name>
+	<artifactId>wcomponents-addons</artifactId>
+	<version>1.0.0-SNAPSHOT</version>
+
+	<parent>
+		<groupId>com.github.bordertech.wcomponents</groupId>
+		<artifactId>wcomponents-parent</artifactId>
+		<version>1.4.22</version><!-- Keep this in sync with wc.version property below -->
+	</parent>
+
+	<packaging>pom</packaging>
+
+	<properties>
+		<wc.qa.skip>true</wc.qa.skip>
+		<wc.version>1.4.22</wc.version><!-- Keep this in sync with the parent version above -->
+	</properties>
+
+	<description>
+		Library of AddOns to provided extra functionality to core `WComponents`.
+	</description>
+
+	<url>https://github.com/bordertech/wcomponents-addons</url>
+
+	<scm>
+		<url>https://github.com/bordertech/wcomponents-addons</url>
+		<connection>scm:git:https://github.com/bordertech/wcomponents-addons.git</connection>
+		<developerConnection>scm:git:https://github.com/bordertech/wcomponents-addons.git</developerConnection>
+		<tag>wcomponents-addons-1.0.0</tag>
+	</scm>
+
+	<issueManagement>
+		<system>GitHub</system>
+		<url>https://github.com/bordertech/wcomponents-addons/issues</url>
+	</issueManagement>
+
+	<ciManagement>
+		<system>CircleCI</system>
+		<url>https://circleci.com/gh/bordertech/wcomponents-addons/</url>
+	</ciManagement>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+			<groupId>com.github.bordertech.wcomponents</groupId>
+			<artifactId>wcomponents-bundle</artifactId>
+			<version>${wc.version}</version>
+		</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<!-- Configuration properties. -->
+		<dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.10</version>
+		</dependency>
+		<!-- Commons config brings in servlet.api -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<modules>
+		<module>wcomponents-lib</module>
+		<!--<module>wcomponents-grid</module>--><!-- Not yet! -->
+	</modules>
+</project>

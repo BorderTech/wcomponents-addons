@@ -1,7 +1,7 @@
 package com.github.bordertech.wcomponents.lib.polling;
 
-import com.github.bordertech.taskmanager.service.ResultHolder;
-import com.github.bordertech.taskmanager.service.ServiceAction;
+import com.github.bordertech.taskmaster.service.ResultHolder;
+import com.github.bordertech.taskmaster.service.ServiceAction;
 import com.github.bordertech.wcomponents.lib.common.WDiv;
 import java.io.Serializable;
 
