@@ -44,21 +44,30 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- WComponents core -->
 			<dependency>
-			<groupId>com.github.bordertech.wcomponents</groupId>
-			<artifactId>wcomponents-bundle</artifactId>
-			<version>${wc.version}</version>
-		</dependency>
+				<groupId>com.github.bordertech.wcomponents</groupId>
+				<artifactId>wcomponents-core</artifactId>
+				<version>${wc.version}</version>
+			</dependency>
+
+			<!-- Didums -->
+			<dependency>
+				<groupId>com.github.bordertech.didums</groupId>
+				<artifactId>didums-core</artifactId>
+				<version>1.0.0</version>
+			</dependency>
+
+			<!-- TaskMaster -->
+			<dependency>
+				<groupId>com.github.bordertech.taskmaster</groupId>
+				<artifactId>taskmaster</artifactId>
+				<version>1.0.0</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
-		<!-- Configuration properties. -->
-		<dependency>
-			<groupId>commons-configuration</groupId>
-			<artifactId>commons-configuration</artifactId>
-			<version>1.10</version>
-		</dependency>
 		<!-- Commons config brings in servlet.api -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -69,7 +78,11 @@
 	</dependencies>
 
 	<modules>
-		<module>wcomponents-lib</module>
-		<!--<module>wcomponents-grid</module>--><!-- Not yet! -->
+		<module>wcomponents-addons-common</module>
+		<module>wcomponents-addons-grid</module>
+		<module>wcomponents-addons-polling</module>
+		<module>wcomponents-addons-cardpath</module>
+		<module>wcomponents-addons-table</module>
+		<module>wcomponents-addons-bundle</module>
 	</modules>
 </project>
