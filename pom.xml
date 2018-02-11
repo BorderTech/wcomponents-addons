@@ -4,7 +4,7 @@
 
 	<name>wcomponents-addons</name>
 	<artifactId>wcomponents-addons</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.2-SNAPSHOT</version>
 
 	<parent>
 		<groupId>com.github.bordertech.wcomponents</groupId>
@@ -79,7 +79,7 @@
 
 	<modules>
 		<module>wcomponents-addons-common</module>
-		<module>wcomponents-addons-grid</module>
+		<!--<module>wcomponents-addons-grid</module>--><!-- Not yet! -->
 		<module>wcomponents-addons-polling</module>
 		<module>wcomponents-addons-cardpath</module>
 		<module>wcomponents-addons-table</module>
