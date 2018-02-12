@@ -3,8 +3,9 @@ package com.github.bordertech.wcomponents.addons.polling;
 import com.github.bordertech.didums.Didums;
 import com.github.bordertech.taskmaster.service.ResultHolder;
 import com.github.bordertech.taskmaster.service.ServiceAction;
-import com.github.bordertech.taskmaster.service.ServiceException;
 import com.github.bordertech.taskmaster.service.ServiceHelper;
+import com.github.bordertech.wcomponents.BeanProvider;
+import com.github.bordertech.wcomponents.BeanProviderBound;
 import com.github.bordertech.wcomponents.Request;
 import com.github.bordertech.wcomponents.addons.common.WDiv;
 import java.io.Serializable;
@@ -24,7 +25,7 @@ import org.apache.commons.logging.LogFactory;
  * <li>{@link #setServiceAction(action)} to provide the service action</li>
  * </ul>
  * <p>
- * Note - If {@link #isHoldCachedResult()} is true, then a generated cache key is used each time and the cache cleared
+ * Note - If {@link #isUseCachedResult()} is true, then a generated cache key is used each time and the cache cleared
  * after the result is processed.
  * </p>
  * <p>
@@ -82,6 +83,17 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 		super(delay);
 		getContentHolder().add(contentResultHolder);
 		contentResultHolder.setVisible(false);
+
+		// The content holder will use the "result" from the result holder
+		getContentHolder().setBeanProperty("result");
+
+		// Set a BEAN Provider on the content that retrieves the service result
+		getContentHolder().setBeanProvider(new BeanProvider() {
+			@Override
+			public Object getBean(final BeanProviderBound bound) {
+				return getServiceResult();
+			}
+		});
 	}
 
 	@Override
@@ -120,18 +132,58 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 	}
 
 	@Override
-	public boolean isHoldCachedResult() {
-		return getComponentModel().holdCachedResult;
+	public boolean isUseCachedResult() {
+		return getComponentModel().useCachedResult;
 	}
 
 	@Override
-	public void setHoldCachedResult(final boolean holdCachedResult) {
-		getOrCreateComponentModel().holdCachedResult = holdCachedResult;
+	public void setUseCachedResult(final boolean useCachedResult) {
+		getOrCreateComponentModel().useCachedResult = useCachedResult;
 	}
 
 	@Override
 	public ResultHolder<S, T> getServiceResult() {
-		return getComponentModel().serviceResult;
+		if (isUseCachedResult()) {
+			ResultHolder resultHolder = getServiceCache().get(getServiceCacheKey());
+			if (resultHolder == null && getContentResultHolder().isVisible()) {
+				return handleCacheExpired();
+			}
+			return resultHolder;
+		} else {
+			return getComponentModel().serviceResult;
+		}
+	}
+
+	/**
+	 * @param serviceResult the service result
+	 */
+	@Override
+	public void setServiceResult(final ResultHolder<S, T> serviceResult) {
+		String key = getServiceCacheKey();
+		if (isUseCachedResult()) {
+			if (key == null) {
+				throw new IllegalStateException("A cache key must be provided for a cached service result");
+			}
+			if (serviceResult == null) {
+				getServiceCache().remove(key);
+			} else {
+				getServiceCache().put(getServiceCacheKey(), serviceResult);
+			}
+		} else {
+			if (key != null) {
+				getServiceCache().remove(key);
+			}
+			getOrCreateComponentModel().serviceResult = serviceResult;
+		}
+	}
+
+	/**
+	 *
+	 * @return the result for an expired cache item
+	 */
+	protected ResultHolder<S, T> handleCacheExpired() {
+		// TODO Maybe try and reload if expired
+		throw new IllegalStateException("Cache entry has expired");
 	}
 
 	@Override
@@ -152,53 +204,58 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 	@Override
 	public void doRefreshContent() {
 		handleClearServiceCache();
-		handleClearResults();
+		// Clear the result
+		setServiceResult(null);
 		super.doRefreshContent();
 	}
 
 	@Override
 	public void doManuallyLoadResult(final S criteria, final T result) {
-		if (result == null || criteria == null) {
-			return;
+		// Check we have a cache key if using a cached service response
+		if (isUseCachedResult() && getServiceCacheKey() == null) {
+			throw new IllegalStateException("No cache key provided for the result to be held against.");
 		}
 		getContentHolder().reset();
-		handleClearResults();
 		getStartButton().setVisible(false);
 		setServiceCriteria(criteria);
-		handleResult(new ResultHolder(criteria, result));
-	}
-
-	@Override
-	protected void handleStoppedPolling() {
-		String key = getServiceCacheKey();
-		ResultHolder result = getServiceCache().get(key);
-		if (result == null) {
-			result = new ResultHolder(key, new IllegalStateException("Result has expired so service result not available"));
-		}
-		handleResult(result);
+		ResultHolder resultHolder = new ResultHolder(criteria, result);
+		handleSaveServiceResult(resultHolder);
+		handleResult(resultHolder);
 	}
 
 	@Override
 	protected boolean checkForStopPolling() {
 		String key = getServiceCacheKey();
+		ResultHolder result;
 		try {
-			if (SERVICE_HELPER.checkASyncResult(getServiceCache(), key) != null) {
-				setPollingStatus(PollingStatus.STOPPED);
-			}
-		} catch (ServiceException e) {
-			// Put Exception in the CACHE so it can be retrieved after it stops polling (Will be cleared straight away).
-			ResultHolder result = new ResultHolder(key, e);
-			getServiceCache().put(key, result);
+			result = SERVICE_HELPER.checkASyncResult(getServiceCache(), key);
+		} catch (Exception e) {
+			result = new ResultHolder(key, e);
+		}
+		// If have result, stop polling
+		if (result != null) {
 			setPollingStatus(PollingStatus.STOPPED);
+			handleSaveServiceResult(result);
 		}
 		return super.checkForStopPolling();
 	}
 
+	@Override
+	protected void handleStoppedPolling() {
+		ResultHolder result = getServiceResult();
+		if (result == null) {
+			throw new IllegalStateException("Service result is not available.");
+		}
+		handleResult(result);
+	}
+
 	/**
-	 * @param serviceResult the service result
+	 * Save the service result locally or keep it in the cache.
+	 *
+	 * @param resultHolder the service result
 	 */
-	protected void setServiceResult(final ResultHolder<S, T> serviceResult) {
-		getOrCreateComponentModel().serviceResult = serviceResult;
+	protected void handleSaveServiceResult(final ResultHolder<S, T> resultHolder) {
+		setServiceResult(resultHolder);
 	}
 
 	/**
@@ -208,18 +265,18 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 	 */
 	protected ResultHolder<S, T> handleASyncServiceCall() {
 
-		// Clear result
-		handleClearResults();
-
 		// Check we have a service action
 		ServiceAction action = getServiceAction();
 		if (action == null) {
 			throw new IllegalStateException("No service action provided for polling.");
 		}
 
-		// Generate a cache key (if needed)
-		if (!isHoldCachedResult()) {
+		// Generate a cache key so the polling result can be held
+		if (!isUseCachedResult()) {
+			//Generate a key
 			setServiceCacheKey(generateCacheKey());
+			// Clear previous result
+			setServiceResult(null);
 		}
 
 		// Check we have a cache key
@@ -230,18 +287,6 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 
 		// Start Service action (will return result if already cached)
 		return SERVICE_HELPER.handleAsyncServiceCall(getServiceCache(), key, getServiceCriteria(), action);
-	}
-
-	/**
-	 * Clear previous results.
-	 */
-	protected void handleClearResults() {
-		setServiceResult(null);
-		if (!isHoldCachedResult() && getServiceCacheKey() != null) {
-			String key = getServiceCacheKey();
-			setServiceCacheKey(null);
-			getServiceCache().remove(key);
-		}
 	}
 
 	/**
@@ -266,20 +311,13 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 	 * @param resultHolder the polling action result
 	 */
 	protected void handleResult(final ResultHolder<S, T> resultHolder) {
-		// Save the result
-		setServiceResult(resultHolder);
-		// Check if we need to clear the cache
-		if (!isHoldCachedResult()) {
-			getServiceCache().remove(getServiceCacheKey());
-		}
 		if (resultHolder.isResult()) {
 			// Successful Result
-			T result = resultHolder.getResult();
-			handleSuccessfulResult(result);
+			handleResultSuccessful(resultHolder.getResult());
 		} else {
 			// Exception message
 			Exception excp = resultHolder.getException();
-			handleExceptionResult(excp);
+			handleResultException(excp);
 			LOG.error("Error loading data. " + excp.getMessage());
 		}
 	}
@@ -289,19 +327,17 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 	 *
 	 * @param excp the exception that occurred
 	 */
-	protected void handleExceptionResult(final Exception excp) {
+	protected void handleResultException(final Exception excp) {
 		handleErrorMessage(excp.getMessage());
 		doShowRetry();
 	}
 
 	/**
-	 * Handle the successful result. Default behaviour is to set the result as the bean for the content.
+	 * Handle the successful result.
 	 *
-	 * @param result the polling action result
+	 * @param result the service result
 	 */
-	protected void handleSuccessfulResult(final T result) {
-		// Set the result as the bean
-		getContentHolder().setBean(result);
+	protected void handleResultSuccessful(final T result) {
 		getContentResultHolder().setVisible(true);
 	}
 
@@ -356,7 +392,7 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 
 		private String cacheKey;
 
-		private boolean holdCachedResult = true;
+		private boolean useCachedResult = true;
 
 		private ServiceAction<S, T> serviceAction;
 
