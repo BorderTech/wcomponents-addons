@@ -61,14 +61,19 @@ public interface PollableService<S extends Serializable, T extends Serializable>
 	void setServiceCacheKey(final String serviceCacheKey);
 
 	/**
-	 * @return true if keep the result in the service cache
+	 * @return true if use the cache to hold the service result
 	 */
-	boolean isHoldCachedResult();
+	boolean isUseCachedResult();
 
 	/**
-	 * @param holdCachedResult true if keep the result in the service cache
+	 * @param useCachedResult true if use the cache to hold the service result
 	 */
-	void setHoldCachedResult(final boolean holdCachedResult);
+	void setUseCachedResult(final boolean useCachedResult);
+
+	/**
+	 * @param serviceResult the service result
+	 */
+	void setServiceResult(final ResultHolder<S, T> serviceResult);
 
 	/**
 	 * @return the service result, or null if still processing.
