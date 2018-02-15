@@ -29,13 +29,11 @@ public interface PollableService<S extends Serializable, T extends Serializable>
 	void doManuallyLoadResult(final S criteria, final T result);
 
 	/**
-	 *
 	 * @return the service action to use for polling
 	 */
 	ServiceAction<S, T> getServiceAction();
 
 	/**
-	 *
 	 * @param serviceAction the service action to use for polling
 	 */
 	void setServiceAction(final ServiceAction<S, T> serviceAction);
@@ -59,6 +57,16 @@ public interface PollableService<S extends Serializable, T extends Serializable>
 	 * @param serviceCacheKey the service cache key
 	 */
 	void setServiceCacheKey(final String serviceCacheKey);
+
+	/**
+	 * @return the service thread pool, or null for default
+	 */
+	String getServiceThreadPool();
+
+	/**
+	 * @param serviceThreadPool the service thread pool or null for default
+	 */
+	void setServiceThreadPool(final String serviceThreadPool);
 
 	/**
 	 * @return true if use the cache to hold the service result
