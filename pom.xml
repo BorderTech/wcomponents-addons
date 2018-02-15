@@ -62,7 +62,7 @@
 			<dependency>
 				<groupId>com.github.bordertech.taskmaster</groupId>
 				<artifactId>taskmaster</artifactId>
-				<version>1.0.0</version>
+				<version>1.0.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

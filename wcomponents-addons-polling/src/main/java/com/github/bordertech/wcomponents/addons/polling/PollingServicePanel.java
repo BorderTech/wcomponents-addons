@@ -1,6 +1,7 @@
 package com.github.bordertech.wcomponents.addons.polling;
 
 import com.github.bordertech.didums.Didums;
+import com.github.bordertech.taskmaster.RejectedTaskException;
 import com.github.bordertech.taskmaster.service.ResultHolder;
 import com.github.bordertech.taskmaster.service.ServiceAction;
 import com.github.bordertech.taskmaster.service.ServiceHelper;
@@ -127,8 +128,18 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 	}
 
 	@Override
-	public void setServiceCacheKey(final String key) {
-		getOrCreateComponentModel().cacheKey = key;
+	public void setServiceCacheKey(final String cacheKey) {
+		getOrCreateComponentModel().cacheKey = cacheKey;
+	}
+
+	@Override
+	public void setServiceThreadPool(final String threadPool) {
+		getOrCreateComponentModel().threadPool = threadPool;
+	}
+
+	@Override
+	public String getServiceThreadPool() {
+		return getComponentModel().threadPool;
 	}
 
 	@Override
@@ -192,6 +203,8 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 		if (getPollingStatus() == PollingStatus.PROCESSING) {
 			return;
 		}
+		// Flag service as not running yet
+		setServiceRunning(false);
 		// Start the service call
 		ResultHolder<S, T> result = handleASyncServiceCall();
 		if (result == null) {
@@ -227,10 +240,20 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 	protected boolean checkForStopPolling() {
 		String key = getServiceCacheKey();
 		ResultHolder result;
-		try {
-			result = SERVICE_HELPER.checkASyncResult(getServiceCache(), key);
-		} catch (Exception e) {
-			result = new ResultHolder(key, e);
+		if (isServiceRunning()) {
+			// Service was started so check for result
+			try {
+				result = SERVICE_HELPER.checkASyncResult(getServiceCache(), key);
+			} catch (Exception e) {
+				result = new ResultHolder(key, e);
+			}
+		} else {
+			// Try and start service (usually means no threads were available)
+			result = handleASyncServiceCall();
+			if (isServiceRunning()) {
+				// Started service successfully.
+				LOG.info("Successfully started service on ajax poll in pool [" + getServiceThreadPool() + "].");
+			}
 		}
 		// If have result, stop polling
 		if (result != null) {
@@ -242,6 +265,9 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 
 	@Override
 	protected void handleStoppedPolling() {
+		// Reset service flag
+		setServiceRunning(false);
+		// Process result
 		ResultHolder result = getServiceResult();
 		if (result == null) {
 			throw new IllegalStateException("Service result is not available.");
@@ -286,7 +312,24 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 		}
 
 		// Start Service action (will return result if already cached)
-		return SERVICE_HELPER.handleAsyncServiceCall(getServiceCache(), key, getServiceCriteria(), action);
+		try {
+			ResultHolder result = SERVICE_HELPER.handleAsyncServiceCall(getServiceCache(), key, getServiceCriteria(), action);
+			setServiceRunning(true);
+			return result;
+		} catch (RejectedTaskException e) {
+			// Could not start service (usually no threads available). Try and start on the next poll.
+			LOG.info("Could not start service in pool [" + getServiceThreadPool() + "]. Will try next poll.");
+			setServiceRunning(false);
+			return null;
+		}
+	}
+
+	protected boolean isServiceRunning() {
+		return getComponentModel().serviceRunning;
+	}
+
+	protected void setServiceRunning(final boolean serviceRunning) {
+		getOrCreateComponentModel().serviceRunning = serviceRunning;
 	}
 
 	/**
@@ -392,7 +435,11 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 
 		private String cacheKey;
 
+		private String threadPool;
+
 		private boolean useCachedResult = true;
+
+		private boolean serviceRunning;
 
 		private ServiceAction<S, T> serviceAction;
 
