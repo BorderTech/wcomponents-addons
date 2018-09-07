@@ -84,5 +84,7 @@
 		<module>wcomponents-addons-cardpath</module>
 		<module>wcomponents-addons-table</module>
 		<module>wcomponents-addons-bundle</module>
+		<module>tomcat-lde</module>
+		<module>tomcat-lde-commons-logging</module>
 	</modules>
 </project>
