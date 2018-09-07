@@ -4,19 +4,19 @@
 
 	<name>wcomponents-addons</name>
 	<artifactId>wcomponents-addons</artifactId>
-	<version>1.0.3-SNAPSHOT</version>
+	<version>1.0.5-SNAPSHOT</version>
 
 	<parent>
 		<groupId>com.github.bordertech.wcomponents</groupId>
 		<artifactId>wcomponents-parent</artifactId>
-		<version>1.4.22</version><!-- Keep this in sync with wc.version property below -->
+		<version>1.4.24</version><!-- Keep this in sync with wc.version property below -->
 	</parent>
 
 	<packaging>pom</packaging>
 
 	<properties>
 		<wc.qa.skip>true</wc.qa.skip>
-		<wc.version>1.4.22</wc.version><!-- Keep this in sync with the parent version above -->
+		<wc.version>1.4.24</wc.version><!-- Keep this in sync with the parent version above -->
 	</properties>
 
 	<description>
