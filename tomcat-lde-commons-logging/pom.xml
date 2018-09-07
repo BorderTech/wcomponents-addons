@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<name>tomcat-lde-commons-logging</name>
+	<artifactId>tomcat-lde-commons-logging</artifactId>
+
+	<parent>
+		<groupId>com.github.bordertech.wcomponents</groupId>
+		<artifactId>wcomponents-addons</artifactId>
+		<version>1.0.3-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<packaging>jar</packaging>
+
+	<properties>
+		<wc.qa.skip>false</wc.qa.skip>
+	</properties>
+
+	<dependencies>
+		
+		<!-- Tomcat for LDE -->
+		<dependency>
+			<groupId>com.github.bordertech.wcomponents</groupId>
+			<artifactId>tomcat-lde</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
+	</dependencies>
+
+</project>
