@@ -20,7 +20,7 @@ public class WLibTab extends WTab {
 	 *
 	 * @param content the tab content
 	 * @param tabName the tab label
-	 * @param mode the {@link TabMode | tab mode}
+	 * @param mode the {@link WTabSet.TabMode | tab mode}
 	 */
 	public WLibTab(final WComponent content, final String tabName, final WTabSet.TabMode mode) {
 		super(content, tabName, mode);
@@ -31,7 +31,7 @@ public class WLibTab extends WTab {
 	 *
 	 * @param content the tab content
 	 * @param tabName the tab label
-	 * @param mode the {@link TabMode | tab mode}.
+	 * @param mode the {@link WTabSet.TabMode | tab mode}.
 	 * @param accessKey the access key used to activate this tab
 	 */
 	public WLibTab(final WComponent content, final String tabName, final WTabSet.TabMode mode, final char accessKey) {
@@ -43,7 +43,7 @@ public class WLibTab extends WTab {
 	 *
 	 * @param content the tab content
 	 * @param label the tab label, which may contain rich content.
-	 * @param mode the {@link TabMode | tab mode}.
+	 * @param mode the {@link WTabSet.TabMode | tab mode}.
 	 */
 	public WLibTab(final WComponent content, final WDecoratedLabel label, final WTabSet.TabMode mode) {
 		super(content, label, mode);
@@ -54,7 +54,7 @@ public class WLibTab extends WTab {
 	 *
 	 * @param content the tab content
 	 * @param label the tab label, which may contain rich content.
-	 * @param mode the {@link TabMode | tab mode}.
+	 * @param mode the {@link WTabSet.TabMode | tab mode}.
 	 * @param accessKey the access key used to activate this tab
 	 */
 	public WLibTab(final WComponent content, final WDecoratedLabel label, final WTabSet.TabMode mode, final char accessKey) {

@@ -21,9 +21,10 @@ import org.apache.commons.logging.LogFactory;
  * Expects the following to be set before polling:-
  * </p>
  * <ul>
- * <li>{@link #setServiceCriteria(criteria)} to provide the service criteria</li>
- * <li>{@link #setServiceCacheKey(key)} to provide the cache key</li>
- * <li>{@link #setServiceAction(action)} to provide the service action</li>
+ * <li>{@link #setServiceCriteria(java.io.Serializable)} to provide the service criteria</li>
+ * <li>{@link #setServiceCacheKey(java.lang.String) (key)} to provide the cache key</li>
+ * <li>{@link #setServiceAction(com.github.bordertech.taskmaster.service.ServiceAction)} to provide the service
+ * action</li>
  * </ul>
  * <p>
  * Note - If {@link #isUseCachedResult()} is true, then a generated cache key is used each time and the cache cleared
@@ -35,15 +36,13 @@ import org.apache.commons.logging.LogFactory;
  * along with a retry button.
  * </p>
  * <p>
- *
- * </p>
- * <p>
  * Methods commonly overridden:-
  * </p>
  * <ul>
  * <li>{@link #getServiceCacheKey()} - provides the cache key used for the service result.</li>
- * <li>{@link #handleInitResultContent(Request)} - init the result content on successful service call.</li>
- * <li>{@link #handleInitPollingPanel(Request) } - init the polling panel.</li>
+ * <li>{@link #handleInitResultContent(com.github.bordertech.wcomponents.Request)} - init the result content on
+ * successful service call.</li>
+ * <li>{@link #handleInitPollingPanel(com.github.bordertech.wcomponents.Request) } - init the polling panel.</li>
  * </ul>
  *
  * @param <S> the polling criteria type

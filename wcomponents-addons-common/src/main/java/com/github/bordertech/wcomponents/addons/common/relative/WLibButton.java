@@ -1,6 +1,7 @@
 package com.github.bordertech.wcomponents.addons.common.relative;
 
 import com.github.bordertech.wcomponents.WButton;
+import java.text.MessageFormat;
 
 /**
  * Allows a relative base URL to be used so the URL can be used in different contexts without changing.
