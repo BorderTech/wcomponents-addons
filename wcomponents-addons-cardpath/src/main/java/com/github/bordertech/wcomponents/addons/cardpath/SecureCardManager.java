@@ -1,6 +1,8 @@
 package com.github.bordertech.wcomponents.addons.cardpath;
 
 import com.github.bordertech.wcomponents.WComponent;
+import com.github.bordertech.wcomponents.addons.common.relative.EnvironmentHelper;
+import com.github.bordertech.wcomponents.addons.common.relative.WLibServlet;
 import java.util.List;
 
 /**

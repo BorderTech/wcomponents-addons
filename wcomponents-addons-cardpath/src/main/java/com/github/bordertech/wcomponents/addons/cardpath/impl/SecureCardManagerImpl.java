@@ -12,6 +12,7 @@ import com.github.bordertech.wcomponents.addons.cardpath.AppSecurityManager;
 import com.github.bordertech.wcomponents.addons.cardpath.SecureCard;
 import com.github.bordertech.wcomponents.addons.cardpath.SecureCardManager;
 import com.github.bordertech.wcomponents.addons.common.relative.EnvironmentHelper;
+import com.github.bordertech.wcomponents.addons.common.relative.WLibServlet;
 import com.github.bordertech.wcomponents.util.SystemException;
 import com.github.bordertech.wcomponents.util.Util;
 import com.google.common.base.Objects;
