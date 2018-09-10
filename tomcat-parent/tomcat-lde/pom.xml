@@ -7,7 +7,7 @@
 
 	<parent>
 		<groupId>com.github.bordertech.wcomponents</groupId>
-		<artifactId>wcomponents-addons</artifactId>
+		<artifactId>tomcat-parent</artifactId>
 		<version>1.0.5-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
