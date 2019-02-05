@@ -26,11 +26,22 @@
 			<artifactId>wcomponents-addons-common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<!-- WComponents Core -->
+		<dependency>
+			<groupId>com.github.bordertech.wcomponents</groupId>
+			<artifactId>wcomponents-core</artifactId>
+		</dependency>
+
+		<!-- Commons config brings in servlet.api -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+		</dependency>
 
 		<!-- Taskmaster -->
 		<dependency>
 			<groupId>com.github.bordertech.taskmaster</groupId>
-			<artifactId>taskmaster</artifactId>
+			<artifactId>taskmaster-service-helper</artifactId>
 		</dependency>
 
 	</dependencies>

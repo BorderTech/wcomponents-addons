@@ -15,9 +15,9 @@ import com.github.bordertech.wcomponents.addons.common.relative.EnvironmentHelpe
 import com.github.bordertech.wcomponents.addons.common.relative.WLibServlet;
 import com.github.bordertech.wcomponents.util.SystemException;
 import com.github.bordertech.wcomponents.util.Util;
-import com.google.common.base.Objects;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Secure Card Manager and Path.
@@ -117,7 +117,7 @@ public class SecureCardManagerImpl<T extends SecureCard> extends WCardManager im
 	@Override
 	public T getSecureCard(final String screenPath) {
 		for (T card : getSecureCards()) {
-			if (Objects.equal(card.getAppPath().getPath(), screenPath)) {
+			if (Objects.equals(card.getAppPath().getPath(), screenPath)) {
 				return card;
 			}
 		}

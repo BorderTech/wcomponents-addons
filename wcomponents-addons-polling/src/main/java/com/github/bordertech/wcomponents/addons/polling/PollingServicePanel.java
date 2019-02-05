@@ -1,10 +1,9 @@
 package com.github.bordertech.wcomponents.addons.polling;
 
-import com.github.bordertech.didums.Didums;
-import com.github.bordertech.taskmaster.RejectedTaskException;
 import com.github.bordertech.taskmaster.service.ResultHolder;
 import com.github.bordertech.taskmaster.service.ServiceAction;
 import com.github.bordertech.taskmaster.service.ServiceHelper;
+import com.github.bordertech.taskmaster.service.exception.RejectedServiceException;
 import com.github.bordertech.wcomponents.BeanProvider;
 import com.github.bordertech.wcomponents.BeanProviderBound;
 import com.github.bordertech.wcomponents.Request;
@@ -23,25 +22,21 @@ import org.apache.commons.logging.LogFactory;
  * <ul>
  * <li>{@link #setServiceCriteria(java.io.Serializable)} to provide the service criteria</li>
  * <li>{@link #setServiceCacheKey(java.lang.String) (key)} to provide the cache key</li>
- * <li>{@link #setServiceAction(com.github.bordertech.taskmaster.service.ServiceAction)} to provide the service
- * action</li>
+ * <li>{@link #setServiceAction(com.github.bordertech.taskmaster.service.ServiceAction)} to provide the service action</li>
  * </ul>
  * <p>
- * Note - If {@link #isUseCachedResult()} is true, then a generated cache key is used each time and the cache cleared
- * after the result is processed.
+ * Note - If {@link #isUseCachedResult()} is true, then a generated cache key is used each time and the cache cleared after the result is processed.
  * </p>
  * <p>
- * The successful polling result will be set as the bean available to the panel. The content of the panel will only be
- * displayed if the polling action was successful. If the polling action fails, then the error message will be displayed
- * along with a retry button.
+ * The successful polling result will be set as the bean available to the panel. The content of the panel will only be displayed if the polling action
+ * was successful. If the polling action fails, then the error message will be displayed along with a retry button.
  * </p>
  * <p>
  * Methods commonly overridden:-
  * </p>
  * <ul>
  * <li>{@link #getServiceCacheKey()} - provides the cache key used for the service result.</li>
- * <li>{@link #handleInitResultContent(com.github.bordertech.wcomponents.Request)} - init the result content on
- * successful service call.</li>
+ * <li>{@link #handleInitResultContent(com.github.bordertech.wcomponents.Request)} - init the result content on successful service call.</li>
  * <li>{@link #handleInitPollingPanel(com.github.bordertech.wcomponents.Request) } - init the polling panel.</li>
  * </ul>
  *
@@ -53,8 +48,6 @@ import org.apache.commons.logging.LogFactory;
 public class PollingServicePanel<S extends Serializable, T extends Serializable> extends PollingPanel implements PollableService<S, T> {
 
 	private static final Log LOG = LogFactory.getLog(PollingServicePanel.class);
-
-	private static final ServiceHelper SERVICE_HELPER = Didums.getService(ServiceHelper.class);
 
 	private final WDiv contentResultHolder = new WDiv() {
 		@Override
@@ -242,7 +235,7 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 		if (isServiceRunning()) {
 			// Service was started so check for result
 			try {
-				result = SERVICE_HELPER.checkASyncResult(getServiceCache(), key);
+				result = ServiceHelper.getProvider().checkASyncResult(getServiceCache(), key);
 			} catch (Exception e) {
 				result = new ResultHolder(key, e);
 			}
@@ -312,10 +305,10 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 
 		// Start Service action (will return result if already cached)
 		try {
-			ResultHolder result = SERVICE_HELPER.handleAsyncServiceCall(getServiceCache(), key, getServiceCriteria(), action);
+			ResultHolder result = ServiceHelper.getProvider().handleAsyncServiceCall(getServiceCache(), key, getServiceCriteria(), action);
 			setServiceRunning(true);
 			return result;
-		} catch (RejectedTaskException e) {
+		} catch (RejectedServiceException e) {
 			// Could not start service (usually no threads available). Try and start on the next poll.
 			LOG.info("Could not start service in pool [" + getServiceThreadPool() + "]. Will try next poll.");
 			setServiceRunning(false);
@@ -395,7 +388,7 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 	 * @return the service cache instance
 	 */
 	protected Cache<String, ResultHolder> getServiceCache() {
-		return SERVICE_HELPER.getDefaultResultHolderCache();
+		return ServiceHelper.getProvider().getDefaultResultHolderCache();
 	}
 
 	/**
@@ -428,7 +421,7 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 	 * @param <S> the criteria type
 	 * @param <T> the service action
 	 */
-	public static class PollingServiceModel<S, T> extends PollingModel {
+	public static class PollingServiceModel<S extends Serializable, T extends Serializable> extends PollingModel {
 
 		private S criteria;
 
