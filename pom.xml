@@ -9,14 +9,14 @@
 	<parent>
 		<groupId>com.github.bordertech.wcomponents</groupId>
 		<artifactId>wcomponents-parent</artifactId>
-		<version>1.4.26</version><!-- Keep this in sync with wc.version property below -->
+		<version>1.5.14</version><!-- Keep this in sync with wc.version property below -->
 	</parent>
 
 	<packaging>pom</packaging>
 
 	<properties>
 		<wc.qa.skip>true</wc.qa.skip>
-		<wc.version>1.4.26</wc.version><!-- Keep this in sync with the parent version above -->
+		<wc.version>1.5.14</wc.version><!-- Keep this in sync with the parent version above -->
 	</properties>
 
 	<description>
@@ -49,33 +49,34 @@
 				<groupId>com.github.bordertech.wcomponents</groupId>
 				<artifactId>wcomponents-core</artifactId>
 				<version>${wc.version}</version>
+				<scope>provided</scope>
+			</dependency>
+
+			<!-- Commons config brings in servlet.api -->
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>2.5</version>
+				<scope>provided</scope>
 			</dependency>
 
 			<!-- Didums -->
 			<dependency>
 				<groupId>com.github.bordertech.didums</groupId>
 				<artifactId>didums-core</artifactId>
-				<version>1.0.0</version>
+				<version>1.0.3</version>
+				<scope>provided</scope>
 			</dependency>
 
 			<!-- TaskMaster -->
 			<dependency>
 				<groupId>com.github.bordertech.taskmaster</groupId>
-				<artifactId>taskmaster</artifactId>
-				<version>1.0.1</version>
+				<artifactId>taskmaster-service-helper</artifactId>
+				<version>1.0.4</version>
+				<scope>provided</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-
-	<dependencies>
-		<!-- Commons config brings in servlet.api -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<version>2.5</version>
-			<scope>provided</scope>
-		</dependency>
-	</dependencies>
 
 	<modules>
 		<module>wcomponents-addons-common</module>
