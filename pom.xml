@@ -9,14 +9,15 @@
 	<parent>
 		<groupId>com.github.bordertech.wcomponents</groupId>
 		<artifactId>wcomponents-parent</artifactId>
-		<version>1.5.14</version><!-- Keep this in sync with wc.version property below -->
+		<version>1.5.16</version><!-- Keep this in sync with wc.version property below -->
 	</parent>
 
 	<packaging>pom</packaging>
 
 	<properties>
-		<wc.qa.skip>true</wc.qa.skip>
-		<wc.version>1.5.14</wc.version><!-- Keep this in sync with the parent version above -->
+		<bt.qa.skip>true</bt.qa.skip>
+		<wc.version>1.5.16</wc.version><!-- Keep this in sync with the parent version above -->
+		<dependency-check.skip>true</dependency-check.skip>
 	</properties>
 
 	<description>
@@ -72,7 +73,7 @@
 			<dependency>
 				<groupId>com.github.bordertech.taskmaster</groupId>
 				<artifactId>taskmaster-service-helper</artifactId>
-				<version>1.0.4</version>
+				<version>1.0.6-SNAPSHOT</version>
 				<scope>provided</scope>
 			</dependency>
 		</dependencies>

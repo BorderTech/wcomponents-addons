@@ -10,6 +10,7 @@ import com.github.bordertech.wcomponents.WAjaxControl;
 import com.github.bordertech.wcomponents.WButton;
 import com.github.bordertech.wcomponents.WContainer;
 import com.github.bordertech.wcomponents.WMessages;
+import com.github.bordertech.wcomponents.WPanel;
 import com.github.bordertech.wcomponents.WProgressBar;
 import com.github.bordertech.wcomponents.WText;
 import com.github.bordertech.wcomponents.addons.common.WDiv;
@@ -30,7 +31,12 @@ import java.util.List;
  * @author Jonathan Austin
  * @since 1.0.0
  */
-public class PollingPanel extends WDiv implements Pollable {
+public class PollingPanel extends WPanel {
+
+	/**
+	 * Default polling timeout of 120 seconds.
+	 */
+	public static final int DEFAULT_POLLING_TIMEOUT = 120;
 
 	/**
 	 * Start polling manually button.
@@ -209,81 +215,116 @@ public class PollingPanel extends WDiv implements Pollable {
 		startButton.setVisible(false);
 	}
 
-	@Override
+	/**
+	 * @return the root container that holds the polling components
+	 */
 	public final WDiv getContentHolder() {
 		return holder;
 	}
 
-	@Override
+	/**
+	 * @return the retry button.
+	 */
 	public WButton getRetryButton() {
 		return retryButton;
 	}
 
-	@Override
+	/**
+	 * @return the start button
+	 */
 	public WButton getStartButton() {
 		return startButton;
 	}
 
-	@Override
+	/**
+	 * @return the AJAX polling interval in milli seconds
+	 */
 	public int getPollingInterval() {
 		return getComponentModel().pollingInterval;
 	}
 
-	@Override
+	/**
+	 *
+	 * @param interval the AJAX polling interval in milli seconds
+	 */
 	public final void setPollingInterval(final int interval) {
 		getOrCreateComponentModel().pollingInterval = interval;
 	}
 
-	@Override
+	/**
+	 * @param text the text displayed while polling
+	 */
 	public void setPollingText(final String text) {
 		getOrCreateComponentModel().pollingText = text;
 	}
 
-	@Override
+	/**
+	 * @return the text displayed while polling
+	 */
 	public String getPollingText() {
 		return getComponentModel().pollingText;
 	}
 
-	@Override
+	/**
+	 * @param pollingStatus the panel status
+	 */
 	public void setPollingStatus(final PollingStatus pollingStatus) {
 		getOrCreateComponentModel().serviceStatus = pollingStatus == null ? PollingStatus.STOPPED : pollingStatus;
 	}
 
-	@Override
+	/**
+	 * @return the polling status
+	 */
 	public PollingStatus getPollingStatus() {
 		return getComponentModel().serviceStatus;
 	}
 
-	@Override
+	/**
+	 * Start AJAX polling manually.
+	 */
 	public void doManualStart() {
 		doStartPolling();
 	}
 
-	@Override
+	/**
+	 * Put the panel in a retry mode.
+	 */
 	public void doShowRetry() {
 		getStartButton().setVisible(false);
 		getRetryButton().setVisible(true);
 		pollingProgressContainer.setVisible(false);
 	}
 
-	@Override
+	/**
+	 * Retry the polling action.
+	 */
 	public void doRetry() {
 		doRefreshContent();
 		doStartPolling();
 	}
 
-	@Override
+	/**
+	 * Reset to start polling again.
+	 */
 	public void doRefreshContent() {
 		getContentHolder().reset();
 		setPollingStatus(PollingStatus.STOPPED);
 	}
 
-	@Override
+	/**
+	 * The AJAX targets that will be refreshed when the polling is complete.
+	 *
+	 * @return the extra AJAX targets
+	 */
 	public List<AjaxTarget> getAjaxTargets() {
 		return getComponentModel().extraTargets;
 	}
 
-	@Override
+	/**
+	 * Add an AJAX target to be refreshed when the polling is complete.
+	 *
+	 * @param target the extra AJAX target to add
+	 */
 	public void addAjaxTarget(final AjaxTarget target) {
 		PollingModel model = getOrCreateComponentModel();
 		if (model.extraTargets == null) {
@@ -294,37 +335,56 @@ public class PollingPanel extends WDiv implements Pollable {
 		}
 	}
 
-	@Override
+	/**
+	 * @return the start type
+	 */
 	public PollingStartType getStartType() {
 		return getComponentModel().startType;
 	}
 
-	@Override
+	/**
+	 *
+	 * @param startType the start type
+	 */
 	public void setStartType(final PollingStartType startType) {
 		getOrCreateComponentModel().startType = startType == null ? PollingStartType.MANUAL : startType;
 	}
 
-	@Override
+	/**
+	 *
+	 * @return the polling timeout interval (in seconds) or 0 for no timeout.
+	 */
 	public int getPollingTimeout() {
 		return getComponentModel().pollingTimeout;
 	}
 
-	@Override
+	/**
+	 *
+	 * @param pollingTimeout the polling timeout in seconds or 0 for no timeout
+	 */
 	public void setPollingTimeout(final int pollingTimeout) {
 		getOrCreateComponentModel().pollingTimeout = pollingTimeout > 0 ? pollingTimeout : 0;
 	}
 
-	@Override
+	/**
+	 *
+	 * @param useRetryOnError true if display retry button on error
+	 */
 	public void setUseRetryOnError(final boolean useRetryOnError) {
 		getOrCreateComponentModel().useRetryOnError = useRetryOnError;
 	}
 
-	@Override
+	/**
+	 *
+	 * @return true if display retry button on error
+	 */
 	public boolean isUseRetryOnError() {
 		return getComponentModel().useRetryOnError;
 	}
 
-	@Override
+	/**
+	 * @return the progress bar used while polling
+	 */
 	public WProgressBar getProgressBar() {
 		return pollingProgressBar;
 	}
@@ -438,14 +498,14 @@ public class PollingPanel extends WDiv implements Pollable {
 	/**
 	 * @param msg the error message to handle
 	 */
-	protected void handleErrorMessage(final String msg) {
-		handleErrorMessage(Arrays.asList(msg));
+	protected void addErrorMessage(final String msg) {
+		addErrorMessage(Arrays.asList(msg));
 	}
 
 	/**
 	 * @param msgs the error messages to handle
 	 */
-	protected void handleErrorMessage(final List<String> msgs) {
+	protected void addErrorMessage(final List<String> msgs) {
 		for (String msg : msgs) {
 			getMessages().error(msg);
 		}
@@ -480,7 +540,7 @@ public class PollingPanel extends WDiv implements Pollable {
 	 * Handle a polling timeout.
 	 */
 	protected void handleTimeoutPolling() {
-		handleErrorMessage("Polling timedout");
+		addErrorMessage("Polling timedout");
 		if (isUseRetryOnError()) {
 			doShowRetry();
 		}
@@ -537,7 +597,7 @@ public class PollingPanel extends WDiv implements Pollable {
 	/**
 	 * This model holds the state information.
 	 */
-	public static class PollingModel extends DivModel {
+	public static class PollingModel extends PanelModel {
 
 		/**
 		 * Service status.

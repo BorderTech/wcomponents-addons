@@ -88,7 +88,6 @@ public class PollingLogicalThreadPoolPanel<S extends Serializable, T extends Ser
 		} else {
 			// No thread available
 			LOG.info("Could not start service in logical pool. Will try next poll.");
-			setServiceRunning(false);
 			return null;
 		}
 	}
