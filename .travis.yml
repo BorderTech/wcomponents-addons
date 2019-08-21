@@ -1,3 +1,15 @@
+dist: trusty
+
+cache:
+  directories:
+  - $HOME/.m2
+
+addons:
+  sonarcloud:
+    organization: "bordertech-github"
+    token:
+        secure: $SONAR_TOKEN
+
 before_install:
 - echo "MAVEN_OPTS='-Xmx512m -XX:MaxPermSize=128m'" > ~/.mavenrc
 - mvn clean
@@ -9,8 +21,8 @@ jdk:
 
 ## Travis installs the project with the following maven command:- "mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
 script:
- - mvn package
+ - mvn package sonar:sonar -Dsonar.projectKey="bordertech-wcomponents-addons"
 
-## Send Coverage to Codacy
+## Send Coverage to Codacy (No tests yet)
 ## after_success:
-##  - java -jar codacy-coverage-reporter-4.0.5-assembly.jar report -l Java -r taskmaster-core/target/site/jacoco/jacoco.xml
+##  - java -jar codacy-coverage-reporter-4.0.5-assembly.jar report -l Java -r wcomponents-addons-common/target/site/jacoco/jacoco.xml

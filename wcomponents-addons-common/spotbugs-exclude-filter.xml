@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindBugsFilter>
+
+	<!-- To be reviewed and give reasons why excluded. -->
+	<Match>
+		<Bug pattern="PCOA_PARTIALLY_CONSTRUCTED_OBJECT_ACCESS" />
+	</Match>
+
+</FindBugsFilter>

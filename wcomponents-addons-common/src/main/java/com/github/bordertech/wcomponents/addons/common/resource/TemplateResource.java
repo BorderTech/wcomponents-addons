@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -111,7 +112,7 @@ public class TemplateResource implements ContentStreamAccess {
 		} else {
 			templateRenderer.renderTemplate(getTemplate(), getParameters(), Collections.EMPTY_MAP, writer, getEngineOptions());
 		}
-		return output.toString().getBytes();
+		return output.toString().getBytes(StandardCharsets.UTF_8);
 	}
 
 	/**

@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 
 	<properties>
-		<wc.qa.skip>true</wc.qa.skip><!-- TODO enable this -->
+		<bt.qa.skip>true</bt.qa.skip>
 	</properties>
 
 	<dependencies>
