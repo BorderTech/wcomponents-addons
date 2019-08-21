@@ -4,7 +4,7 @@
 
 	<name>wcomponents-addons</name>
 	<artifactId>wcomponents-addons</artifactId>
-	<version>1.0.6-SNAPSHOT</version>
+	<version>1.0.6-beta-1</version>
 
 	<parent>
 		<groupId>com.github.bordertech.wcomponents</groupId>
@@ -30,7 +30,7 @@
 		<url>https://github.com/bordertech/wcomponents-addons</url>
 		<connection>scm:git:https://github.com/bordertech/wcomponents-addons.git</connection>
 		<developerConnection>scm:git:https://github.com/bordertech/wcomponents-addons.git</developerConnection>
-		<tag>wcomponents-addons-1.0.0</tag>
+		<tag>wcomponents-addons-1.0.6-beta-1</tag>
 	</scm>
 
 	<issueManagement>
