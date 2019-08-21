@@ -1,6 +1,7 @@
 package com.github.bordertech.wcomponents.addons.common.relative;
 
 import com.github.bordertech.wcomponents.WLink;
+import com.github.bordertech.wcomponents.addons.common.AddonsProperties;
 
 /**
  * Allows a relative base URL to be used so the URL can be used in different contexts without changing.
@@ -66,12 +67,12 @@ public class WLibLink extends WLink implements RelativeUrlBaseable {
 
 	@Override
 	public void setRelativeBaseUrl(final boolean relativeBaseUrl) {
-		setAttribute(RelativeUrlBaseable.RELATIVE_FLAG_ATTR, relativeBaseUrl);
+		setAttribute(AddonsProperties.RELATIVE_FLAG_ATTR, relativeBaseUrl);
 	}
 
 	@Override
 	public boolean isRelativeBaseUrl() {
-		Boolean flag = (Boolean) getAttribute(RelativeUrlBaseable.RELATIVE_FLAG_ATTR);
+		Boolean flag = (Boolean) getAttribute(AddonsProperties.RELATIVE_FLAG_ATTR);
 		return flag != null && flag;
 	}
 

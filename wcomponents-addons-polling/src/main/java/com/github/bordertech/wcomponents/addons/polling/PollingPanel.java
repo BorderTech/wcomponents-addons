@@ -15,16 +15,16 @@ import com.github.bordertech.wcomponents.WProgressBar;
 import com.github.bordertech.wcomponents.WText;
 import com.github.bordertech.wcomponents.addons.common.WDiv;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 /**
  * This panel is used to poll via AJAX and can reload other components via AJAX.
  * <p>
- * The panel start type defaults to {@link PollingStartType#MANUAL}, which means to start the panel polling call
- * {@link #doManualStart()}. The start type {@link PollingStartType#AUTOMATIC} will start polling when the panel is made
- * visible and {@link PollingStartType#BUTTON} provides a button that the user can click to start polling.
+ * The panel start type defaults to {@link PollingStartType#MANUAL}, which means to start the panel polling call {@link #doManualStart()}. The start
+ * type {@link PollingStartType#AUTOMATIC} will start polling when the panel is made visible and {@link PollingStartType#BUTTON} provides a button
+ * that the user can click to start polling.
  * </p>
  *
  *
@@ -499,7 +499,7 @@ public class PollingPanel extends WPanel {
 	 * @param msg the error message to handle
 	 */
 	protected void addErrorMessage(final String msg) {
-		addErrorMessage(Arrays.asList(msg));
+		addErrorMessage(Collections.singletonList(msg));
 	}
 
 	/**

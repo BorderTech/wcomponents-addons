@@ -1,6 +1,7 @@
 package com.github.bordertech.wcomponents.addons.common.relative;
 
 import com.github.bordertech.wcomponents.WButton;
+import com.github.bordertech.wcomponents.addons.common.AddonsProperties;
 import java.text.MessageFormat;
 
 /**
@@ -58,12 +59,12 @@ public class WLibButton extends WButton implements RelativeUrlBaseable {
 
 	@Override
 	public void setRelativeBaseUrl(final boolean relativeBaseUrl) {
-		setAttribute(RelativeUrlBaseable.RELATIVE_FLAG_ATTR, relativeBaseUrl);
+		setAttribute(AddonsProperties.RELATIVE_FLAG_ATTR, relativeBaseUrl);
 	}
 
 	@Override
 	public boolean isRelativeBaseUrl() {
-		Boolean flag = (Boolean) getAttribute(RelativeUrlBaseable.RELATIVE_FLAG_ATTR);
+		Boolean flag = (Boolean) getAttribute(AddonsProperties.RELATIVE_FLAG_ATTR);
 		return flag != null && flag;
 	}
 

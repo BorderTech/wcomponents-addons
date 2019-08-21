@@ -26,21 +26,18 @@ import org.apache.commons.logging.LogFactory;
  * <ul>
  * <li>{@link #setServiceCriteria(java.io.Serializable)} to provide the service criteria</li>
  * <li>{@link #setServiceCacheKey(java.lang.String) (key)} to provide the cache key</li>
- * <li>{@link #setServiceAction(com.github.bordertech.taskmaster.service.ServiceAction)} to provide the service
- * action</li>
+ * <li>{@link #setServiceAction(com.github.bordertech.taskmaster.service.ServiceAction)} to provide the service action</li>
  * </ul>
  * <p>
- * The successful polling result will be set as the bean available to the panel. The content of the panel will only be
- * displayed if the polling action was successful. If the polling action fails, then the error message will be displayed
- * along with a retry button.
+ * The successful polling result will be set as the bean available to the panel. The content of the panel will only be displayed if the polling action
+ * was successful. If the polling action fails, then the error message will be displayed along with a retry button.
  * </p>
  * <p>
  * Methods commonly overridden:-
  * </p>
  * <ul>
  * <li>{@link #getServiceCacheKey()} - provides the cache key used for the service result.</li>
- * <li>{@link #handleInitResultContent(com.github.bordertech.wcomponents.Request)} - init the result content on
- * successful service call.</li>
+ * <li>{@link #handleInitResultContent(com.github.bordertech.wcomponents.Request)} - init the result content on successful service call.</li>
  * <li>{@link #handleInitPollingPanel(com.github.bordertech.wcomponents.Request) } - init the polling panel.</li>
  * </ul>
  *
@@ -389,9 +386,12 @@ public class PollingServicePanel<S extends Serializable, T extends Serializable>
 		if (future.isDone()) {
 			try {
 				return future.get();
-			} catch (ExecutionException | InterruptedException e) {
-				// FIXME Handle interruption correctly
-				throw new ServiceException("Error geting result from future", e);
+			} catch (InterruptedException e) {
+				// Restore interrupted state...
+				Thread.currentThread().interrupt();
+				throw new ServiceException("Getting result from Future but thread was interrupted. " + e.getMessage(), e);
+			} catch (ExecutionException e) {
+				throw new ServiceException("Could not get result from the future. " + e.getMessage(), e);
 			}
 		}
 		return null;

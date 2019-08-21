@@ -15,9 +15,9 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<bt.qa.skip>true</bt.qa.skip>
+		<bt.qa.skip>false</bt.qa.skip>
 		<wc.version>1.5.16</wc.version><!-- Keep this in sync with the parent version above -->
-		<dependency-check.skip>true</dependency-check.skip>
+		<dependency-check.skip>false</dependency-check.skip>
 	</properties>
 
 	<description>
@@ -65,7 +65,7 @@
 			<dependency>
 				<groupId>com.github.bordertech.didums</groupId>
 				<artifactId>didums-core</artifactId>
-				<version>1.0.3</version>
+				<version>1.0.4</version>
 				<scope>provided</scope>
 			</dependency>
 

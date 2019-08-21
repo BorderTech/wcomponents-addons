@@ -2,6 +2,7 @@ package com.github.bordertech.wcomponents.addons.common.relative;
 
 import com.github.bordertech.wcomponents.ImageResource;
 import com.github.bordertech.wcomponents.WImage;
+import com.github.bordertech.wcomponents.addons.common.AddonsProperties;
 
 /**
  * Allows a relative base URL to be used so the URL can be used in different contexts without changing.
@@ -21,12 +22,11 @@ public class WLibImage extends WImage implements RelativeUrlBaseable {
 
 	/**
 	 * <p>
-	 * Creates a WImage with the given static content. This is provided as a convenience method for when the image is
-	 * included as static content in the class path rather than in the web application's resources.
+	 * Creates a WImage with the given static content. This is provided as a convenience method for when the image is included as static content in
+	 * the class path rather than in the web application's resources.
 	 * </p>
 	 * <p>
-	 * The mime type for the image is looked up from the "mimeType.*" mapping configuration parameters using the
-	 * resource's file extension.
+	 * The mime type for the image is looked up from the "mimeType.*" mapping configuration parameters using the resource's file extension.
 	 * </p>
 	 *
 	 * @param imageResource the resource path to the image file.
@@ -65,12 +65,12 @@ public class WLibImage extends WImage implements RelativeUrlBaseable {
 
 	@Override
 	public void setRelativeBaseUrl(final boolean relativeBaseUrl) {
-		setAttribute(RelativeUrlBaseable.RELATIVE_FLAG_ATTR, relativeBaseUrl);
+		setAttribute(AddonsProperties.RELATIVE_FLAG_ATTR, relativeBaseUrl);
 	}
 
 	@Override
 	public boolean isRelativeBaseUrl() {
-		Boolean flag = (Boolean) getAttribute(RelativeUrlBaseable.RELATIVE_FLAG_ATTR);
+		Boolean flag = (Boolean) getAttribute(AddonsProperties.RELATIVE_FLAG_ATTR);
 		return flag != null && flag;
 	}
 
